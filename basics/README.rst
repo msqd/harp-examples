@@ -1,7 +1,7 @@
 Example: basic setup
 ====================
 
-.. code::
+.. code:: shell
 
 	# install dependencies in a poetry-managed virtualenv
 	make install
