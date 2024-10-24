@@ -1,0 +1,7 @@
+{
+  "name": "HARP Project",
+  "slug": "{{cookiecutter.name.lower().replace(' ', '_') }}",
+  "author": "Anonymous",
+  "create_application": false,
+  "create_config": true
+}
