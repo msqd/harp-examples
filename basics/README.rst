@@ -9,3 +9,5 @@ Example: basic setup
 	# start the proxy, using a builtin example provided (proxy:httpbin)
 	make start
 
+* http://[::]:4000 is the proxied httpbin
+* http://[::]:4080 is the HARP dashboard
