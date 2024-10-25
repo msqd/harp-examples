@@ -1,0 +1,19 @@
+http_client:
+  # HTTP timeout (default to `harp.settings.DEFAULT_TIMEOUT`)
+  timeout: 10.0
+
+  cache:
+    # Set to false to disable cache entirely
+    enabled: true
+
+    # Override the cache controller definition (optional)
+    controller:
+      allow_stale: true
+
+      allow_heuristics: true
+
+      # Which HTTP methods should be cacheable? (default: [GET, HEAD])
+      cacheable_methods: [GET, HEAD]
+
+      # Which status codes should be cacheable? (default: see `hishel.HEURISTICALLY_CACHEABLE_STATUS_CODES`)
+      cacheable_status_codes: [200, 301, 308]
