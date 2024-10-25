@@ -1,0 +1,25 @@
+proxy:
+  endpoints:
+    - name: timeapi
+      port: 4000
+      remote:
+        check_after: 5
+        endpoints:
+          - url: "https://timeapi.io"
+
+rules:
+  "timeapi":
+    "GET *":
+      on_response: |
+        from harp.utils.bytes import ensure_bytes
+        from httpx import ByteStream
+        from datetime import datetime
+        from email.utils import format_datetime
+        import json
+
+        # converting the date from ISO8601 to RFC 2822
+        date = json.loads(response.body)['dateTime']
+        date_obj = datetime.fromisoformat(date)
+        formated_datetime = format_datetime(date_obj)
+
+        response.stream = ByteStream(ensure_bytes(json.dumps({"dateTime": formated_datetime})))
