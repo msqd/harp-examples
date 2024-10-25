@@ -1,0 +1,38 @@
+proxy:
+  endpoints:
+    - name: webservices
+      port: 4000
+      remote:
+        check_after: 5
+        endpoints:
+          - url: "http://webservices.oorsprong.org"
+
+rules:
+  "webservices":
+    "POST *":
+      on_response: |
+        from harp.utils.bytes import ensure_bytes
+        from httpx import ByteStream
+        import json
+        import xmltodict
+
+
+        d = xmltodict.parse(response.body)
+        envelope = d["soap:Envelope"]
+
+
+        rest_body = envelope["soap:Body"]
+
+        # Inline the cleaning logic directly in `on_response`
+        cleaned_dict = {}
+        for key, value in rest_body.items():
+            new_key = key[2:] if key.startswith("m:") else key
+            if new_key.startswith("@"):
+                continue
+            if isinstance(value, dict):
+                cleaned_value = {k[2:] if k.startswith("m:") else k: v for k, v in value.items() if not k.startswith("@")}
+                cleaned_dict[new_key] = cleaned_value if cleaned_value else value
+            else:
+                cleaned_dict[new_key] = value
+
+        response.stream = ByteStream(ensure_bytes(json.dumps(cleaned_dict)))
