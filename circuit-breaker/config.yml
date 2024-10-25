@@ -1,0 +1,12 @@
+proxy:
+  endpoints:
+    - name: httpbin
+      port: 4000
+      remote:
+        check_after: 5
+        endpoints:
+          - { url: "https://httpbin.org" }
+          - { url: "http://httpbin.org", pools: [fallback] }
+        break_on: [http_4xx, http_5xx, network_error]
+        probe:
+          path: /
