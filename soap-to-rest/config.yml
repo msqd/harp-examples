@@ -9,30 +9,80 @@ proxy:
 
 rules:
   "webservices":
+    "GET *":
+      on_request: |
+        from harp.utils.bytes import ensure_bytes
+        from httpx import ByteStream
+        import xmltodict
+        import json
+
+        country_iso_code = request.query.get("sISOCode")
+        # XML template with a placeholder for the country ISO code
+        xml_template = f"""<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+            <CountryCurrency xmlns="http://www.oorsprong.org/websamples.countryinfo">
+              <sCountryISOCode>{country_iso_code}</sCountryISOCode>
+            </CountryCurrency>
+          </soap:Body>
+        </soap:Envelope>"""
+
+        new_path = "websamples.countryinfo/CountryInfoService.wso"
+        request.path = new_path
+
+        request.query = None
+        request.method = "POST"
+        request.headers.pop("content-length", None)
+        request.stream = ByteStream(ensure_bytes(xml_template))
+
     "POST *":
       on_response: |
         from harp.utils.bytes import ensure_bytes
         from httpx import ByteStream
         import json
         import xmltodict
+        from collections import deque
 
+        print("HEY")
+        rest_body = xmltodict.parse(response.body)["soap:Envelope"]["soap:Body"]
+        print(rest_body)
 
-        d = xmltodict.parse(response.body)
-        envelope = d["soap:Envelope"]
+        # Stack to hold dictionaries we need to process, starting with the top-level dictionary
+        stack = deque([(rest_body, rest_body)])
 
+        while stack:
+            current_dict, parent_dict = stack.pop()
+            
+            # Dictionary to store cleaned key-value pairs at this level
+            cleaned_dict = {}
+            
+            for key, value in current_dict.items():
+                # Remove "m:" prefix if it exists, otherwise keep the original key
+                new_key = key[2:] if key.startswith("m:") else key
+                
+                # Skip keys that start with "@"
+                if new_key.startswith("@"):
+                    continue
 
-        rest_body = envelope["soap:Body"]
+                if isinstance(value, dict):
+                    # Clean nested dictionary in the same way
+                    cleaned_value = {
+                        k[2:] if k.startswith("m:") else k: v
+                        for k, v in value.items() if not k.startswith("@")
+                    }
+                    # Store the cleaned dictionary, push it to stack if it contains nested dictionaries
+                    cleaned_dict[new_key] = cleaned_value
+                    if cleaned_value:  # Push non-empty nested dictionaries onto the stack
+                        stack.append((value, cleaned_value))
+                else:
+                    # Store the cleaned key-value pair for non-dictionary values
+                    cleaned_dict[new_key] = value
 
-        # Inline the cleaning logic directly in `on_response`
-        cleaned_dict = {}
-        for key, value in rest_body.items():
-            new_key = key[2:] if key.startswith("m:") else key
-            if new_key.startswith("@"):
-                continue
-            if isinstance(value, dict):
-                cleaned_value = {k[2:] if k.startswith("m:") else k: v for k, v in value.items() if not k.startswith("@")}
-                cleaned_dict[new_key] = cleaned_value if cleaned_value else value
-            else:
-                cleaned_dict[new_key] = value
+            # Update the parent dictionary with the cleaned entries at this level
+            parent_dict.clear()
+            parent_dict.update(cleaned_dict)
 
-        response.stream = ByteStream(ensure_bytes(json.dumps(cleaned_dict)))
+        # Convert the fully processed dictionary to JSON
+        json_data = json.dumps(rest_body, indent=4)
+
+        response.stream = ByteStream(ensure_bytes(json_data))
