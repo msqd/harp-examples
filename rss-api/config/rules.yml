@@ -1,0 +1,13 @@
+rules:
+  "*":
+    "GET *":
+      # language=python
+      on_request: |
+        request.path = "/archive.xml"
+
+    "GET /archive.xml":
+      # language=python
+      on_response: |
+        import feedparser
+
+        response = feedparser.parse(response.body)

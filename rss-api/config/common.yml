@@ -1,0 +1,6 @@
+proxy:
+  endpoints:
+    - name: feed
+      description: HARP Proxy news feed
+      port: 4000
+      url: https://lists.harp-proxy.net/
