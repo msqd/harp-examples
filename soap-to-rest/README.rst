@@ -47,7 +47,7 @@ After transformation, the SOAP request is replaced with a RESTful GET request th
 
 Example REST GET request::
 
-    http://localhost:<proxy_port>sISOCode=US
+    http://localhost:<proxy_port>?sISOCode=US
 
 Response Transformation
 =======================
