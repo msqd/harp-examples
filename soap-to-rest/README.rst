@@ -42,12 +42,12 @@ REST Transformation
 After transformation, the SOAP request is replaced with a RESTful GET request that uses a query parameter for the country code. The new request format looks like this:
 
 **RESTful GET Request**
-- URL: ``http://localhost:<proxy_port>/websamples.countryinfo/CountryInfoService.wso/CountryCurrency``
+- URL: ``http://localhost:<proxy_port>``
 - Query Parameter: ``?sISOCode=<country_iso_code>``
 
 Example REST GET request::
 
-    http://localhost:<proxy_port>/websamples.countryinfo/CountryInfoService.wso/CountryCurrency?sISOCode=US
+    http://localhost:<proxy_port>sISOCode=US
 
 Response Transformation
 =======================
@@ -75,8 +75,8 @@ Using Harp Proxy rules, the response is converted to JSON, allowing a RESTful re
     {
         "CountryCurrencyResponse": {
             "CountryCurrencyResult": {
-                "sISOCode": null,
-                "sName": "Country not found in the database"
+                "sISOCode": "USD",
+                "sName": "Dollars"
             }
         }
     }
