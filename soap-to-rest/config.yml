@@ -43,9 +43,7 @@ rules:
         import xmltodict
         from collections import deque
 
-        print("HEY")
         rest_body = xmltodict.parse(response.body)["soap:Envelope"]["soap:Body"]
-        print(rest_body)
 
         # Stack to hold dictionaries we need to process, starting with the top-level dictionary
         stack = deque([(rest_body, rest_body)])
