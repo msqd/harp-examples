@@ -4,11 +4,11 @@ version = "0.1.0"
 description = ""
 authors = ["Anonymous"]
 readme = "README.rst"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-harp-proxy = "^0.7.2"
-httpx = "^0.27.2"
+harp-proxy = "^0.7.4"
 
 
 [build-system]
