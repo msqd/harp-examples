@@ -21,7 +21,7 @@ class FeedController(HttpProxyController):
         context.request.path = "/archive.xml"
 
     @override
-    async def filter_response(self, context: ProxyFilterEvent) -> ProxyFilterEvent:
+    async def filter_response(self, context: ProxyFilterEvent) -> ProxyFilterResult:
         context = await super().filter_response(context)
         initial_response = context.response
 
