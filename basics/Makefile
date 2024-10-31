@@ -7,8 +7,11 @@ RUN ?= $(POETRY) run
 start: install
 	$(RUN) harp server --example proxy:httpbin
 
+
+test: install
+	$(RUN) pytest
+
+
 install:
 	$(POETRY) install
 
-test:
-	$(RUN) pytest

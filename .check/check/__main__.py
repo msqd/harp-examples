@@ -37,6 +37,11 @@ def main():
         except subprocess.CalledProcessError:
             print ('   ⚠️ Error while running make install.')
 
+        try:
+            subprocess.run("make test", shell=True, check=True, cwd=example_dir, capture_output=CAPTURE_OUTPUT)
+        except subprocess.CalledProcessError:
+            print ('   ⚠️ Error while running make test.')
+
 
         #from pprint import pprint
         #pprint(conf) 
