@@ -1,0 +1,22 @@
+proxy:
+  endpoints:
+    - port: 4000
+      name: httpbin
+      url: http://httpbin.org
+    - port: 4001
+      name: httpbin2
+      url: http://httpbin.org
+    - port: 4002
+      name: httpbin3
+      url: http://httpbin.org
+
+aggregator:
+  port: 4070
+  aggregates:
+    - path: /combine
+      method: GET
+      endpoints:
+        - name: httpbin
+          path: /uuid
+        - name: httpbin2
+          path: /cookies

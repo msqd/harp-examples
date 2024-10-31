@@ -1,0 +1,4 @@
+services:
+  - name: "aggregator.controller"
+    description: "Main controller for the aggregator."
+    type: aggregator.controller.AggregatorController
