@@ -7,5 +7,5 @@ start: install
 	$(POETRY) run harp server --example proxy:httpbin
 
 install:
-	$(POETRY) install --no-root
+	$(POETRY) install
 

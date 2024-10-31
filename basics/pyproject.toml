@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "example"
+name = "basics"
 version = "0.1.0"
 description = ""
 authors = ["Romain Dorgueil <romain@makersquad.fr>"]
 readme = "README.rst"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-harp-proxy = "^0.7.2"
+harp-proxy = "^0.7.4"
 
 
 [build-system]
