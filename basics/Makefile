@@ -1,11 +1,14 @@
 POETRY ?= $(shell which poetry || echo poetry)
+RUN ?= $(POETRY) run
 
-.PHONY: start install
+.PHONY: start install test
 
 
 start: install
-	$(POETRY) run harp server --example proxy:httpbin
+	$(RUN) harp server --example proxy:httpbin
 
 install:
 	$(POETRY) install
 
+test:
+	$(RUN) pytest
