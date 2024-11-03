@@ -47,7 +47,12 @@ After transformation, the SOAP request is replaced with a RESTful GET request th
 
 Example REST GET request::
 
-    http://localhost:<proxy_port>?sISOCode=US
+.. code-block:: shell
+
+curl --location 'http://localhost:4000?sISOCode=FR' \
+--header 'Content-Type: text/xml; charset=utf-8' \
+
+
 
 Response Transformation
 =======================
