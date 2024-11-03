@@ -5,7 +5,7 @@ import tomllib
 import subprocess
 
 ROOT_DIR = os.path.realpath(os.path.join(__path__[0], '../..'))
-HARP_EXPECTED_VERSION =  '^0.7.4'
+HARP_EXPECTED_VERSION =  '^0.7.5'
 CAPTURE_OUTPUT = True
 
 
