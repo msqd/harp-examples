@@ -49,8 +49,7 @@ Example REST GET request::
 
 .. code-block:: shell
 
-curl --location 'http://localhost:4000?sISOCode=FR' \
---header 'Content-Type: text/xml; charset=utf-8' \
+    curl --location 'http://localhost:4000?sISOCode=FR' --header 'Content-Type: text/xml; charset=utf-8'
 
 
 
