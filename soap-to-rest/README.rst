@@ -45,9 +45,9 @@ After transformation, the SOAP request is replaced with a RESTful GET request th
 - URL: ``http://localhost:<proxy_port>``
 - Query Parameter: ``?sISOCode=<country_iso_code>``
 
-Example REST GET request::
+Example REST GET request:
 
-.. code-block:: bash
+.. code::
 
     curl --location 'http://localhost:4000?sISOCode=FR' --header 'Content-Type: text/xml; charset=utf-8'
 
