@@ -9,3 +9,8 @@ Example: aggregator
 	# start the proxy
 	make start
 
+You can then combine httbin/uuid and httpbin2/cookies using the aggregator.
+with the following command:
+
+.. code::
+	curl --location 'http://localhost:4070/combine' 
