@@ -47,7 +47,7 @@ After transformation, the SOAP request is replaced with a RESTful GET request th
 
 Example REST GET request::
 
-.. code-block:: shell
+.. code-block:: bash
 
     curl --location 'http://localhost:4000?sISOCode=FR' --header 'Content-Type: text/xml; charset=utf-8'
 
